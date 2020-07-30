@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+set -e
+
 #check python
-if [[ "$(python -c "import sys; print(sys.version[0])")" -ne "3" ]]; then
+if [[ "$(python -c "import sys; print(''.join(sys.version[0:3:2]))")" -lt "37" ]]; then
     printf "Aliasing python3 as python"
-    alias python=python3
+    alias python=python3.7
 fi
 
 
