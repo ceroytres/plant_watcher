@@ -9,7 +9,7 @@ from picamera import PiCamera
 
 class BaseWebCam(abc.ABC):
 
-    @abc.abstractmethod:
+    @abc.abstractmethod
     def isOpen(self) -> bool:
         pass
 
