@@ -1,10 +1,10 @@
 import abc
 import io
 
-try:
-    from picamera.array import PiRGBArray
-    from picamera import PiCamera
-except BaseException:
+
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+
 
 
 class BaseWebCam(abc.ABC):

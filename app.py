@@ -17,7 +17,8 @@ def generate_frame(camera):
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server)
 
-
+# Based on:
+# https://community.plotly.com/t/does-dash-support-opencv-video-from-webcam/11012/2
 @server.route('/video_feed')
 def video_feed():
     return Response(generate_frame(PiWebCam()),
