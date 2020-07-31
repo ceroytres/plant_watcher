@@ -3,5 +3,5 @@ dash==1.14.0
 Pillow==7.2.0
 autopep8==1.5.3
 picamera==1.13
-numpy==1.19.1 
-wheel
+numpy==1.19.0 
+wheel<=0.34.2 
