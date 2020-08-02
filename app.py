@@ -11,6 +11,7 @@ import numpy as np
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
+from dash.dependencies import Input, Output
 import plotly.express as px
 
 from omegaconf import OmegaConf
@@ -28,24 +29,39 @@ print(cfg.pretty())
 app = dash.Dash(__name__, title=cfg.app.name, external_stylesheets=['/assets/style.css'],
                 meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
 
-lux_model = LuxModel(**cfg.lux_model)
-R = np.linspace(5, 20000, 1000)
-lux = lux_model.r2lux(R)
 
-fig = px.line(x=R, y = lux, labels={'x': r'Resistance (Ω)', 'y': 'Lux (lx)'},
-            color_discrete_sequence=[cfg.app.colors['text']],
-            line_dash_sequence=['dot'])
-
-
-fig.update_layout(
-    plot_bgcolor=cfg.app.colors['background'],
-    paper_bgcolor=cfg.app.colors['background'],
-    font_color=cfg.app.colors['text'],
-    autosize = False,
-    width = 600,
-    yaxis_type="log",
-    xaxis_type="log"
+@app.callback(
+    Output('lux-model', 'figure'),
+    [Input('axis-type', 'value')]
 )
+def plot_lux_model(axis_type):
+
+
+    lux_model = LuxModel(**cfg.lux_model)
+    
+    if axis_type == "Linear":
+        R = np.linspace(5, 500, 1000)
+    else:
+        R = np.linspace(5, 40000, 1000)
+    
+    lux = lux_model.r2lux(R)
+    fig = px.line(x=R, y = lux, labels={'x': r'Resistance (Ω)', 'y': 'Lux (lx)'},
+                color_discrete_sequence=[cfg.app.colors['text']],
+                line_dash_sequence=['dot'])
+
+    axis_type = "linear" if axis_type == "Linear" else "log"
+
+    fig.update_layout(
+        plot_bgcolor=cfg.app.colors['background'],
+        paper_bgcolor=cfg.app.colors['background'],
+        font_color=cfg.app.colors['text'],
+        autosize = False,
+        width = 500,
+        yaxis_type=axis_type,
+        xaxis_type=axis_type
+    )
+
+    return fig
 
 app.layout=html.Div([
                         #Header
@@ -57,17 +73,17 @@ app.layout=html.Div([
                         html.Div([
                             html.Div([
                                         html.H3("Resistance to Lux Model"),
-                                        dcc.Graph(figure=fig, id = 'lux_model')
-
-                            ], className="column"),
-                            html.Div([
-                                        html.H3("Resistance to Lux Model"),
-                                        dcc.Graph(figure=fig, id = 'lux_model2')
-
-                            ], className="column")                            
+                                        dcc.Graph(id = 'lux-model'),
+                                        dcc.RadioItems(
+                                            id='axis-type',
+                                            options=[{'label': i, 'value': i} for i in ['Log', 'Linear']],
+                                            value='Log',
+                                            labelStyle={'display': 'inline-block'}
+                                        )
+                            ], className="column")                        
                         ], className="row")
 
-                        ])
+                    ])
 
 
 
