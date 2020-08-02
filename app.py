@@ -14,18 +14,27 @@ import dash_core_components as dcc
 import plotly.express as px
 
 from omegaconf import OmegaConf
+from hydra.experimental import initialize, compose
 
 from plant_watcher.models import LuxModel
 
-cfg = OmegaConf.load('config/config.yaml')
+#Load configuration settings
+initialize(config_dir='config')
+cfg = compose(config_file='config.yaml')
+  
+print('Configuration Settings...')
+print(cfg.pretty())
+
+app = dash.Dash(__name__, title=cfg.app.name, external_stylesheets=['/assets/style.css'],
+                meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}])
 
 lux_model = LuxModel(**cfg.lux_model)
-R = np.linspace(5, 20000, 100)
+R = np.linspace(5, 20000, 1000)
 lux = lux_model.r2lux(R)
 
 fig = px.line(x=R, y = lux, labels={'x': r'Resistance (Ω)', 'y': 'Lux (lx)'},
-             color_discrete_sequence=[cfg.app.colors['text']],
-             line_dash_sequence=['dot'])
+            color_discrete_sequence=[cfg.app.colors['text']],
+            line_dash_sequence=['dot'])
 
 
 fig.update_layout(
@@ -38,9 +47,6 @@ fig.update_layout(
     xaxis_type="log"
 )
 
-
-app = dash.Dash(__name__, title=cfg.app.name, external_stylesheets=['/assets/style.css'])
-
 app.layout=html.Div([
                         #Header
                         html.Div([
@@ -49,21 +55,24 @@ app.layout=html.Div([
                         ]),
                         #Graph
                         html.Div([
-                        html.Div([
-                                    html.H3("Resistance to Lux Model"),
-                                    dcc.Graph(figure=fig, id = 'lux_model')
+                            html.Div([
+                                        html.H3("Resistance to Lux Model"),
+                                        dcc.Graph(figure=fig, id = 'lux_model')
 
-                        ], className="column")], className="row")
+                            ], className="column"),
+                            html.Div([
+                                        html.H3("Resistance to Lux Model"),
+                                        dcc.Graph(figure=fig, id = 'lux_model2')
+
+                            ], className="column")                            
+                        ], className="row")
 
                         ])
 
+
+
 def open_browser():
     webbrowser.open(cfg.browser.url)
-
-
-
-
-
 
 if __name__ == "__main__":
 
@@ -71,4 +80,5 @@ if __name__ == "__main__":
         threading.Timer(1, open_browser).start()
 
     app.run_server(host = cfg.server.host, port = cfg.server.port,
-                   debug = cfg.server.debug)
+                debug = cfg.server.debug)
+

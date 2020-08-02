@@ -1,11 +1,13 @@
 body {
-    margin: 50px;
+    margin-left: 150px;
+    margin-right: 0px;
     background-color: #5ace00;
     color: #FEFEFE;
     font-family: 'Courier New', Courier, monospace;
+    justify-content: center;
 }
 
-h3{
+h3 {
     font-style: italic;
     color: #FEFEFE;
 }
@@ -20,4 +22,11 @@ h3{
     content: "";
     display: table;
     clear: both;
+  }
+  
+
+  @media screen and (max-width: 1000px) {
+    .column {
+      width: 100%;
+    }
   }

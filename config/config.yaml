@@ -1,3 +1,6 @@
+defaults:
+  - lux_model: estimated
+
 app:
   name: "Plant Watcher"
   colors:
@@ -16,9 +19,3 @@ browser:
 serial:
   port: "/dev/ttyACM0"
   baudrate: 9600
-
-lux_model:
-  m: -1.450249716657489252e+00
-  b: 6.476968488065346641e+00
-  R: 5.15e+03
-  Vin: 5.0
