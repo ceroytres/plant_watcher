@@ -2,6 +2,9 @@ plotly==4.9.0
 dash==1.14.0
 Pillow==7.2.0
 autopep8==1.5.3
-picamera==1.13
-numpy==1.18.5
+scipy==1.5.2
+numpy==1.18.
+pyserial==3.4
+pandas==1.1.0
+omegaconf==2.0.0 
 wheel<=0.34.2 
