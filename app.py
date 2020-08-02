@@ -17,20 +17,25 @@ from omegaconf import OmegaConf
 
 from plant_watcher.models import LuxModel
 
-cfg = OmegaConf.load('config.yaml')
+cfg = OmegaConf.load('config/config.yaml')
 
 lux_model = LuxModel(**cfg.lux_model)
-R = np.linspace(100, 2000, 1000)
+R = np.linspace(5, 20000, 100)
 lux = lux_model.r2lux(R)
 
-fig = px.line(x=R, y = lux, labels={'x': r'Resistance(Ω)', 'y': 'Lux'})
+fig = px.line(x=R, y = lux, labels={'x': r'Resistance (Ω)', 'y': 'Lux (lx)'},
+             color_discrete_sequence=[cfg.app.colors['text']],
+             line_dash_sequence=['dot'])
+
 
 fig.update_layout(
     plot_bgcolor=cfg.app.colors['background'],
     paper_bgcolor=cfg.app.colors['background'],
     font_color=cfg.app.colors['text'],
     autosize = False,
-    width = 500,
+    width = 600,
+    yaxis_type="log",
+    xaxis_type="log"
 )
 
 
@@ -44,10 +49,11 @@ app.layout=html.Div([
                         ]),
                         #Graph
                         html.Div([
+                        html.Div([
                                     html.H3("Resistance to Lux Model"),
                                     dcc.Graph(figure=fig, id = 'lux_model')
 
-                        ])
+                        ], className="column")], className="row")
 
                         ])
 
