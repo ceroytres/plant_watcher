@@ -11,7 +11,7 @@ class LuxModel():
 
     def v2lux(self, Vout: float)->float:
 
-        R_ldr = self.v2lux(Vout)
+        R_ldr = self.v2r(Vout)
 
         lux = self.r2lux(R_ldr)
 
@@ -19,9 +19,8 @@ class LuxModel():
 
     def v2r(self, Vout: float)->float:
 
-        R_ldr = self.R * (self.Vout/self.Vin - 1)
-
-        return R_ldr
+        R_ldr = self.R * (self.Vin/Vout - 1 )
+        return max([R_ldr,0])
 
     def r2lux(self, R):
 

@@ -1,6 +1,5 @@
 defaults:
-  - lux_model: all_circuits
-
+  - lux_model: estimated
 app:
   name: "Plant Watcher"
   colors:
@@ -10,7 +9,7 @@ app:
 server:
   host: 0.0.0.0
   port: 5000
-  debug: true
+  debug: false
 
 browser:
   url: http://${server.host}:${server.port}/
