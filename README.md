@@ -1,1 +1,2 @@
-# plant_watcher
+# Plant Watcher
+

@@ -1,5 +1,14 @@
 # Setup Simple Luxmeter
 
+## Requirements
+This part can be run on a your personal machine or Raspberry Pi.
+
+* OS: MacOS, Windows, Linux, Raspbian Buster
+* Python 
+* Scipy
+* Optional [Sklearn]   
+
+## Steps
 1. Using a multimeter using measure the resistance across the photoresistor, and measure the correpsonding lux level using a luxmeter. Record values in a csv file with resistance being the first column, and lux being the second column as shown below:
 ```
 R0,L0
